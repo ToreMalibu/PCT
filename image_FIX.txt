@@ -1,0 +1,14 @@
+Used this plugin:
+https://wordpress.org/plugins/search-and-replace/
+
+Looking for:
+
+http://50.22.11.28/
+
+50.22.11.28
+
+
+Replace with
+http://www.progressivecontact.com/
+
+Closed!
