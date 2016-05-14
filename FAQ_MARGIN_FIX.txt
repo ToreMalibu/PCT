@@ -1,0 +1,6 @@
+adjust the margin for the paragraphs in the PCT FAQ:
+
+CTL F
+#atext<?php echo $faq->id ?> p{
+
+Line number: 1366
