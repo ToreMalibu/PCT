@@ -3,7 +3,7 @@
 Plugin Name: Spider FAQ
 Plugin URI: http://web-dorado.com/products/wordpress-faq-plugin.html
 Description: The Spider WordPress FAQ plugin is for creating an FAQ (Frequently Asked Questions) section for your website. Spider FAQ allows you to provide the users with a well-designed and informative FAQ section, which can facilitate you in managing various user inquiries by significantly decreasing their amount.
-Version: 1.2
+Version: 2.2
 Author: http://web-dorado.com/
 License: GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
 */
@@ -664,13 +664,11 @@ if(!isset($_POST["order_column"]) or esc_html($_POST["order_column"])=="" )
   }
 
 ?>
-<html>
-<head>
+
 <link rel="stylesheet" type="text/css" href="<?php echo plugins_url( '',__FILE__) ?>/js/template.css" >
 <?php wp_print_scripts('jquery') ?>
 
-</head>
-<body class="contentpane">
+
 <script>
 function displayVals()
 {
@@ -817,8 +815,7 @@ window.parent.tb_remove();
 	    <input type="hidden" name="order_asc_desc"  id="order_asc_desc" value="<?php if(isset($_POST['order_asc_desc'])) echo esc_html($_POST['order_asc_desc']); else echo "asc"; ?>" />
     </div>
 		</form>
-	</body>
-</html>
+
 <?php
 die();
 }
@@ -910,8 +907,8 @@ add_shortcode('Spider_FAQ', 'Spider_FAQ_shotrcode');
 		}
 		$cats = NULL;
 	}
-	
-	$stls=$wpdb->get_row("SELECT * FROM ".$wpdb->prefix."spider_faq_theme WHERE `default`=22");
+	if($faq->theme==""){$wherre=' `default`=22 ';}else {$wherre='id='.$faq->theme.'';}	
+	$stls=$wpdb->get_row("SELECT * FROM ".$wpdb->prefix."spider_faq_theme WHERE ".$wherre);
 	
 		
 	return front_end_faq ($rows,$cats,$standcats,$stls,$faq,$s);		
@@ -1158,6 +1155,10 @@ jQuery(window).load(function(){expand_post_hits(1,<?php echo $faq->id ?>,<?php e
 <?php
 }
 }
+
+
+
+
 ?>	
 
 <style type="text/css" media="screen">
@@ -1201,8 +1202,8 @@ display:table;
 display: table-cell;
 vertical-align: middle;
 width: auto;
+    
 }
-
 #tchangeimg<?php echo $faq->id ?> img{
 	
 
@@ -1452,7 +1453,6 @@ background-color:transparent;
 
 
 
-
 #cattitle<?php echo $faq->id ?>	{
 <?php if($stl->ctbg == 0){
 	?>
@@ -1546,11 +1546,6 @@ color:<?php echo '#'.$stl->rmhovercolor ?> !important;
 text-decoration: none;
 cursor:pointer;
 }
-
-
-
-
-
 </style>
 
 	
@@ -1627,10 +1622,17 @@ document.getElementById('stl<?php echo $faq->id ?>'+i).style.marginLeft="<?php e
 setTimeout("changeall=true",400);
 }
 
-</script>	
-		
+window.onload = function() {
+	if ( jQuery( "#cattitle1" ).length && jQuery( "#cattitle2" ).length) {
+		//do nothing
+	}else{
+		jQuery(".cattitle").css("display", "none");
+	}
+};
 
-	<style>
+
+</script>	
+<style>
 <?php 
 if($stl->width<$stl->twidth)
 {
@@ -1692,9 +1694,7 @@ if($stl->width<$ans_width)
 </style>
 	 	
 
-	
 
-<body>
 		<div id="contentOuter"><div id="contentInner">
   <div class="faq_content" id="<?php echo 'content'.$faq->id ?>" >
   
@@ -1719,7 +1719,8 @@ if($stl->width<$ans_width)
 <br><br>
 </div>
 </div>	
-</form><?php
+</form>
+<?php
 } 
 echo '<img  style="display:none"  src="'.plugins_url( '',__FILE__).'/upload/ikon/like_black.png">';
 echo '<img  style="display:none"  src="'.plugins_url( '',__FILE__).'/upload/ikon/like_white.png">';
@@ -1795,8 +1796,8 @@ if ($faq->standcat==0) {
 								  $like_hits_div='<div id="like_hits_div'.$row->id.'" class="like_hits'.$faq->id.'" >'.$likespan.'<span class="like_hits_span" style="width:50%;float:none;display:table-cell;"><span><span   '.$class.' >'.$imglike.$like.'</span><span>'.$imgunlike.$unlike.'</span></span>'.$hitsspan.'</span></div>';}
 								  else{$like_hits_div='';}
 						echo '</li><li id="post-1236" class="selected" style="margin-left:'.$stl->marginleft.'px !important"><div class="post_top">
-									  <div class="post_right" >
-										  <a href="#" class="post_ajax_title"><span id="post_span'.$row->id.$faq->id.'" onclick="faq_changesrc'.$faq->id.'('.$n.')"><div onclick="hits('.$row->id.','.$faq->id.','.$stl->id.');edit_title(1,'.$row->id.','.$faq->id.',\''.$stl->tbgcolor.'\',\''.$stl->tbghovercolor.'\')"  class="post_title" id="post_title'.$faq->id.'" style="padding: 5px;'?><?php if($stl->titlebg==1) { if ($stl->tbgimage!="") { echo 'background-image:url('.$stl->tbgimage.')'?><?php } echo '">' ?><?php } else echo 'background-color:#'.$stl->tbgcolor.'">
+									  <div class="post_right">
+										  <a href="#" class="post_ajax_title"><span id="post_span'.$row->id.$faq->id.'" onclick="faq_changesrc'.$faq->id.'('.$n.')"><div onclick="hits('.$row->id.','.$faq->id.','.$stl->id.');edit_title(1,'.$row->id.','.$faq->id.',\''.$stl->tbgcolor.'\',\''.$stl->tbghovercolor.'\')"  class="post_title" id="post_title'.$faq->id.'" style="'?><?php if($stl->titlebg==1) { if ($stl->tbgimage!="") { echo 'background-image:url('.$stl->tbgimage.')'?><?php } echo '">' ?><?php } else echo 'background-color:#'.$stl->tbgcolor.'">
 										  '.$number_div.''?><?php if($stl->imgpos==0){ if ($stl->tchangeimage1!=""){ echo'<div align="left" class="tchangeimg" id="tchangeimg'.$faq->id.'"  style="padding-right: 6px;padding-left: 5px;"><img src="'.$stl->tchangeimage1.'"  id="stl'.$faq->id.$n.'" style="box-shadow:none;padding:0px;vertical-align: middle;"/></div>'  ?><?php } echo '<div class="ttext'.$faq->id.'" id="ttext'.$faq->id.'" >'.stripslashes($row->title).'</div></div></span></a>
 										</div>
 									</div>';}else{ echo '<div class="ttext'.$faq->id.'" id="ttext'.$faq->id.'" >'.stripslashes($row->title).'</div>'?><?php if ($stl->tchangeimage1!=""){ echo'<div align="right" class="tchangeimg" id="tchangeimg'.$faq->id.'"  style="padding-right: 6px;padding-left: 5px;"><img src="'.$stl->tchangeimage1.'"  id="stl'.$faq->id.$n.'" style="box-shadow:none;padding:0px;vertical-align: middle;"/></div>' ?><?php } echo '</div></span></a>
@@ -2000,19 +2001,8 @@ $many_faqs++;
 	  </div>
 	  </div> 	
 
-<script type="text/javascript">
-	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-	
-	try {
-		var pageTracker = _gat._getTracker("UA-9222847-1");
-		// Cookied already: 
-		pageTracker._trackPageview();
-	} catch(err) {}
-</script>
-</body>
+
+
 
 <?php
        $content=ob_get_contents();
@@ -2055,8 +2045,6 @@ function add_button_style_Spider_Faq() {
 
 add_action('admin_head', 'add_button_style_Spider_Faq');
 
-
-
 add_action('admin_menu', 'Spider_Faq_options_panel');
 function Spider_Faq_options_panel(){
   $ikon_dir = plugins_url(plugin_basename(dirname(__FILE__))) . '/images/spider_faq_menu_ikon.png';
@@ -2065,7 +2053,7 @@ function Spider_Faq_options_panel(){
  $questions=add_submenu_page( 'Spider_Faq', 'Questions', 'Questions', 'manage_options', 'Spider_Faq_Questions', 'Spider_Faq_Questions');
   add_submenu_page( 'Spider_Faq', 'Categories', 'Categories', 'manage_options', 'Spider_Faq_Categories', 'Spider_Faq_Categories');
   $page_theme=add_submenu_page( 'Spider_Faq', 'Themes', 'Themes', 'manage_options', 'Spider_Faq_Themes', 'Spider_Faq_Themes');
-  add_submenu_page( 'Spider_Faq', 'Licensing', 'Licensing', 'manage_options', 'Spider_FAQ_Licensing', 'Spider_FAQ_Licensing');
+  
   $featured_plugins_page = add_submenu_page('Spider_Faq', 'Featured Plugins', 'Featured Plugins', 'manage_options', 'Spider_Faq_featured_plugins', 'Spider_Faq_featured_plugins');
    add_action('admin_print_styles-' . $featured_plugins_page, 'Spider_Faq_featured_plugins_styles');
 
@@ -2074,34 +2062,6 @@ function Spider_Faq_options_panel(){
 	add_action('admin_print_styles-' . $page_theme, 'sp_faq_admin_styles_scripts');
 	add_action('admin_print_styles-' .$questions, 'faq_calaendar_js');
   }
-  
-  function Spider_FAQ_Licensing(){
-	?>
-    <div style="display:block;width:95%;text-align:right"><a href="http://web-dorado.com/files/fromFAQWP.php" target="_blank" style="color:red; text-decoration:none;">
-            <img src="<?php echo plugins_url('images/header.png',__FILE__) ?>" border="0" alt="http://web-dorado.com/files" width="215"><br>
-            Get the full version&nbsp;&nbsp;&nbsp;&nbsp;
-            </a>
-			</div>
-   <div style="width:95%"> <p>
-This plugin is the non-commercial version of the Spider FAQ. Use of the FAQ is free.<br /> The only
-limitation is the use of the themes. If you want to use one of the 22 standard themes or create a new one that
-satisfies the needs of your web site, you are required to purchase a license.<br /> Purchasing a license will add 22
-standard themes and give possibility to edit the themes of the Spider FAQ. </p>
-<br /><br />
-<a href="http://web-dorado.com/files/fromFAQWP.php" class="button-primary" target="_blank">Purchase a License</a>
-<br /><br /><br />
-<p>After the purchasing the commercial version follow this steps:</p>
-<ol>
-	<li>Deactivate Spider FAQ Plugin</li>
-	<li>Delete Spider FAQ Plugin</li>
-	<li>Install the downloaded commercial version of the plugin</li>
-</ol>
-</div>  
-    <?php
-	
-	
-	}
-  
   function faq_calaendar_js()
   {
 	wp_enqueue_script("faq_calaendar",plugins_url('js\calendar.js', __FILE__));
@@ -2294,13 +2254,12 @@ global $wpdb;
 	case 'save':
 	if($id)
 	{	
-check_admin_referer('nonce_sp_faq', 'nonce_sp_faq');	
+    check_admin_referer('nonce_sp_faq', 'nonce_sp_faq');	
 	apply_spider_ques($id);
 		
 	}
 	else
-	{
-	check_admin_referer('nonce_sp_faq', 'nonce_sp_faq');
+	{   check_admin_referer('nonce_sp_faq', 'nonce_sp_faq');
 		save_spider_ques();
 	}
 		show_spider_ques();
@@ -2391,7 +2350,7 @@ global $wpdb;
 	
 	case 'add_Spider_Faq_Categories':
 		add_spider_cat();
-		break;
+	break;
 	
 	
 	case 'save':
@@ -2494,12 +2453,12 @@ global $wpdb;
 	
 	case 'save':
 	if($id)
-	{		
+	{	check_admin_referer('nonce_sp_faq', 'nonce_sp_faq');	
 	apply_spider_theme($id);
 		
 	}
 	else
-	{
+	{   check_admin_referer('nonce_sp_faq', 'nonce_sp_faq');
 		save_spider_theme();
 	}
 		show_spider_theme();
@@ -2508,12 +2467,12 @@ global $wpdb;
 	case 'apply':	
 		if($id)	
 		{
-			
+			check_admin_referer('nonce_sp_faq', 'nonce_sp_faq');
 			apply_spider_theme($id);
 		}
 		else
 		{
-			
+			check_admin_referer('nonce_sp_faq', 'nonce_sp_faq');
 			save_spider_theme();
 			$id=$wpdb->get_var("SELECT MAX(id) FROM ".$wpdb->prefix."spider_faq_theme");
 		}
@@ -2534,6 +2493,9 @@ global $wpdb;
 
 	
 	case 'remove_Spider_Faq_Themes':
+		$nonce_sp_faq = $_REQUEST['_wpnonce'];
+		if (! wp_verify_nonce($nonce_sp_faq, 'nonce_sp_faq') )
+		  die("Are you sure you want to do this?");
 		remove_spider_theme($id);
 		show_spider_theme();
 		break;
