@@ -1,0 +1,11 @@
+window.onload = function() {
+	if ( jQuery( "#cattitle1" ).length && jQuery( "#cattitle2" ).length) {
+		//do nothing
+	}else{
+		jQuery(".cattitle").css("display", "none");
+	}
+};
+
+spider-faq/faq.php
+
+line 1645
